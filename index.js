@@ -13,16 +13,19 @@ app.use(bodyParser.json());
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const collections = client.db("power-x_gym").collection("homePageAllData");
-   
+
     app.post('/homePageData', (req, res) => {
         console.log(req)
         const homeData = req.body;
-         collections.insertMany(homeData)
+        collections.insertMany(homeData)
             .then(result => {
                 console.log(result)
-                // res.send(result.insertedCount > 0)
-                // console.log(result, 'my result..')
+                res.send(result.insertedCount > 0)
             })
+            .catch(function (err) {
+                res.status(data.status).send({ message: err.message });
+            });
+
     })
 
 });
