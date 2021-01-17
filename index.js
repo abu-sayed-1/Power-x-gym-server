@@ -12,7 +12,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const homePageDataCollections = client.db("power-x_gym").collection("homePageAllData");
-    
+    const trainingData = client.db("power-x_gym").collection("trainingData");
+    const coursesList = client.db("power-x_gym").collection("coursesList")
+    // Post Home Page All Data
     app.post('/homePageData', (req, res) => {
         const homeData = req.body;
         homePageDataCollections.insertMany(homeData)
@@ -23,7 +25,7 @@ client.connect(err => {
                 res.send({ message: err.message });
             });
     });
-
+    // get Home Page All Data
     app.get('/homePageAllData', (req, res) => {
         homePageDataCollections.find({})
             .toArray((err, document) => {
@@ -31,8 +33,36 @@ client.connect(err => {
             })
     });
 
-});
+    // Post Courses List all Data 
+    app.post('/coursesList', (req, res) => {
+        const coursesListData = req.body;
+        coursesList.insertMany(coursesListData)
+            .then(result => res.send(result.insertedCount > 0))
+            .catch(function (err) {
+                res.send({ message: err.message })
+            })
+    });
 
+    // get Courses List all Data
+    app.get('/coursesByData', (req, res) => {
+        coursesList.find({})
+            .toArray((err, document) => {
+                res.send(document)
+            })
+    })
+
+    // Post Training Data  
+    app.post('/trainingData', (req, res) => {
+        console.log(req)
+        const training = req.body;
+        trainingData.insertMany(training)
+            .then(result => res.send(result.insertedCount > 0))
+            .catch(function (err) {
+                res.send({ message: err.message })
+            })
+
+    });
+});
 
 app.get('/', (req, res) => {
     res.send('hello world')
