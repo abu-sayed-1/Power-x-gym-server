@@ -13,7 +13,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     const homePageDataCollections = client.db("power-x_gym").collection("homePageAllData");
     const trainingData = client.db("power-x_gym").collection("trainingData");
-    const coursesList = client.db("power-x_gym").collection("coursesList")
+    const coursesList = client.db("power-x_gym").collection("coursesList");
+    const chooseCourseAndPricing = client.db("power-x_gym").collection("chooseCourseAndPricing");
     // Post Home Page All Data
     app.post('/homePageData', (req, res) => {
         const homeData = req.body;
@@ -62,6 +63,29 @@ client.connect(err => {
             })
 
     });
+
+    app.get('/checkoutId', (req, res) => {
+        const classSchedule = req.body;
+        console.log(req);
+        trainingData.findOne({ id: classSchedule })
+            .toArray((err, document) => {
+                res.send(document)
+            })
+            .catch(function (err) {
+                res.send({ message: err.message })
+            })
+    })
+
+    //Choose Course And Pricing Plans
+    app.post('/pricingPlans', (req, res) => {
+        const chooseCourse = req.body;
+        chooseCourseAndPricing.insertMany(chooseCourse)
+            .then(result => res.send(result.insertedCount > 0))
+            .catch(function (err) {
+                res.send({ message: err.message })
+            })
+
+    })
 });
 
 app.get('/', (req, res) => {
