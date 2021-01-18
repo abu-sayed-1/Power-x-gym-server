@@ -84,7 +84,13 @@ client.connect(err => {
             .catch(function (err) {
                 res.send({ message: err.message })
             })
-
+    });
+    //get Choose Course And Pricing Plans
+    app.get('/chooseCourseData', (req, res) => {
+        chooseCourseAndPricing.find({})
+            .toArray((err, document) => {
+                res.send(document)
+            })
     })
 });
 
