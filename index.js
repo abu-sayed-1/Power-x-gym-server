@@ -15,6 +15,7 @@ client.connect(err => {
     const trainingData = client.db("power-x_gym").collection("trainingData");
     const coursesList = client.db("power-x_gym").collection("coursesList");
     const chooseCourseAndPricing = client.db("power-x_gym").collection("chooseCourseAndPricing");
+    const usersRegistrationData = client.db("power-x_gym").collection("usersRegistrationData");
     // Post Home Page All Data
     app.post('/homePageData', (req, res) => {
         const homeData = req.body;
@@ -64,17 +65,14 @@ client.connect(err => {
 
     });
 
-    app.get('/checkoutId', (req, res) => {
-        const classSchedule = req.body;
-        console.log(req);
-        trainingData.findOne({ id: classSchedule })
+    app.get('/checkout:id', (req, res) => {
+        const classSchedule = req.params.id;
+        console.log(classSchedule);
+        trainingData.find(classSchedule)
             .toArray((err, document) => {
-                res.send(document)
+                res.send(document[0])
             })
-            .catch(function (err) {
-                res.send({ message: err.message })
-            })
-    })
+    });
 
     //Choose Course And Pricing Plans
     app.post('/pricingPlans', (req, res) => {
@@ -91,7 +89,18 @@ client.connect(err => {
             .toArray((err, document) => {
                 res.send(document)
             })
+    });
+
+    // Post user Registration Data 
+    app.post('/personalDetail', (req, res) => {
+        const userData = req.body;
+        console.log(req, 'personalDetail')
+        usersRegistrationData.insertOne(userData)
+            .then(result => {
+                res.send(result.insertedCount > 0)
+            })
     })
+
 });
 
 app.get('/', (req, res) => {
