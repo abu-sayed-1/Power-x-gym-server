@@ -77,6 +77,13 @@ client.connect(err => {
 
   });
 
+  // get ClassSchedule specific Data
+  app.get('/classScheduleSpecificData', (req, res) => {
+    classSchedule.find({ "id": "1000876_9" })
+    .toArray((err,document) => {
+      res.send(document);
+    })
+  });
 
   //Choose Course And Pricing Plans
   app.post('/pricingPlans', (req, res) => {
