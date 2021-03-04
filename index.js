@@ -5,9 +5,10 @@ const MongoClient = require('mongodb').MongoClient;
 const { json } = require('body-parser');
 require("dotenv").config();
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uj2jz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
-const stripe = require("stripe")("sk_test_51HaKX2FWzFyXdW5K1iC3AltgEwZPKgnRludp0SBWuCZHDXyH3X5eaYbpm3lt9HJl1bbYuFcevSlbwpGEtaVzpqTc00nomsTcpv");
+const stripe = require("stripe")(process.env.DB_STRIPE);
 
 const app = express();
+const port = 4000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -80,9 +81,9 @@ client.connect(err => {
   // get ClassSchedule specific Data
   app.get('/classScheduleSpecificData', (req, res) => {
     classSchedule.find({ "id": "1000876_9" })
-    .toArray((err,document) => {
-      res.send(document);
-    })
+      .toArray((err, document) => {
+        res.send(document);
+      })
   });
 
   //Choose Course And Pricing Plans
@@ -141,4 +142,4 @@ app.get('/', (req, res) => {
   res.send('hello world')
 })
 
-app.listen(4000);
+app.listen(process.env.PORT || port);
