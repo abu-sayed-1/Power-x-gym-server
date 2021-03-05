@@ -140,7 +140,7 @@ app.post("/stripe/charge", cors(), async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('hello world mongodb working')
+  res.send('hello world mongodb working....')
 })
 
 app.listen(process.env.PORT || port);
