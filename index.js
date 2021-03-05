@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-// https://guarded-meadow-19744.herokuapp.com
 const bodyParser = require("body-parser");
 const MongoClient = require('mongodb').MongoClient;
 const { json } = require('body-parser');
@@ -87,7 +86,7 @@ client.connect(err => {
       })
   });
 
-  //Choose Course And Pricing Plans
+  //post Choose Course And Pricing Plans
   app.post('/pricingPlans', (req, res) => {
     const chooseCourse = req.body;
     chooseCourseAndPricing.insertMany(chooseCourse)
