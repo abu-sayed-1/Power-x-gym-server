@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+// https://guarded-meadow-19744.herokuapp.com
 const bodyParser = require("body-parser");
 const MongoClient = require('mongodb').MongoClient;
 const { json } = require('body-parser');
@@ -139,7 +140,7 @@ app.post("/stripe/charge", cors(), async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('hello world')
+  res.send('hello world mongodb working')
 })
 
 app.listen(process.env.PORT || port);
