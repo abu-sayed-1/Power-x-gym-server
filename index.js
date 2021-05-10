@@ -22,8 +22,7 @@ client.connect(err => {
   const usersRegistrationData = client.db("power-x_gym").collection("usersRegistrationData");
   // Post Home Page All Data
   app.post('/homePageData', (req, res) => {
-    const homeData = req.body;
-    homePageDataCollections.insertMany(homeData)
+    homePageDataCollections.insertMany(req.body)
       .then(result => {
         res.send(result.insertedCount > 0)
       })
@@ -31,6 +30,7 @@ client.connect(err => {
         res.send({ message: err.message });
       });
   });
+
   // get Home Page All Data
   app.get('/homePageAllData', (req, res) => {
     homePageDataCollections.find({})
@@ -41,12 +41,8 @@ client.connect(err => {
 
   // Post Courses List all Data 
   app.post('/coursesList', (req, res) => {
-    const coursesListData = req.body;
-    coursesList.insertMany(coursesListData)
+    coursesList.insertMany(req.body)
       .then(result => res.send(result.insertedCount > 0))
-      .catch(function (err) {
-        res.send({ message: err.message })
-      })
   });
 
   // get Courses List all Data
@@ -59,23 +55,17 @@ client.connect(err => {
 
   // Post ClassSchedule Data  
   app.post('/classScheduleDetail', (req, res) => {
-    const trainingDetail = req.body;
-    classSchedule.insertMany(trainingDetail)
+    classSchedule.insertMany(req.body)
       .then(result => res.send(result.insertedCount > 0))
-      .catch(function (err) {
-        res.send({ message: err.message })
-      })
-
   });
+
   // get ClassSchedule specific Data 
   app.get('/checkout:id', (req, res) => {
-    const id = req.params.id;
-    let specificId = parseFloat(id);
+    let specificId = parseFloat(req.params.id);
     classSchedule.find({ "id": specificId })
       .toArray((err, document) => {
         res.send(document);
-      })
-
+      });
   });
 
   // get ClassSchedule specific Data
@@ -83,17 +73,13 @@ client.connect(err => {
     classSchedule.find({ "id": "1000876_9" })
       .toArray((err, document) => {
         res.send(document);
-      })
+      });
   });
 
   //post Choose Course And Pricing Plans
   app.post('/pricingPlans', (req, res) => {
-    const chooseCourse = req.body;
-    chooseCourseAndPricing.insertMany(chooseCourse)
-      .then(result => res.send(result.insertedCount > 0))
-      .catch(function (err) {
-        res.send({ message: err.message })
-      })
+    chooseCourseAndPricing.insertMany(req.body)
+      .then(result => res.send(result.insertedCount > 0));
   });
 
   //get Choose Course And Pricing Plans
@@ -101,18 +87,16 @@ client.connect(err => {
     chooseCourseAndPricing.find({})
       .toArray((err, document) => {
         res.send(document)
-      })
+      });
   });
 
   // Post users Registration Data 
   app.post('/personalDetail', (req, res) => {
-    const userData = req.body;
-    usersRegistrationData.insertOne(userData)
+    usersRegistrationData.insertOne(req.body)
       .then(result => {
         res.send(result.insertedCount > 0)
-      })
-  })
-
+      });
+  });
 });
 
 // stripe payment gateWay==========================>
