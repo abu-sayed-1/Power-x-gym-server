@@ -20,15 +20,13 @@ client.connect(err => {
   const coursesList = client.db("power-x_gym").collection("coursesList");
   const chooseCourseAndPricing = client.db("power-x_gym").collection("chooseCourseAndPricing");
   const usersRegistrationData = client.db("power-x_gym").collection("usersRegistrationData");
+  
   // Post Home Page All Data
   app.post('/homePageData', (req, res) => {
     homePageDataCollections.insertMany(req.body)
       .then(result => {
         res.send(result.insertedCount > 0)
       })
-      .catch(function (err) {
-        res.send({ message: err.message });
-      });
   });
 
   // get Home Page All Data
@@ -61,7 +59,7 @@ client.connect(err => {
 
   // get ClassSchedule specific Data 
   app.get('/checkout:id', (req, res) => {
-    let specificId = parseFloat(req.params.id);
+    const specificId = parseFloat(req.params.id);
     classSchedule.find({ "id": specificId })
       .toArray((err, document) => {
         res.send(document);
